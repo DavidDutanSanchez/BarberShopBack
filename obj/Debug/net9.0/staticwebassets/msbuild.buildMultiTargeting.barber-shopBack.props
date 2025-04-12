@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\barber-shopBack.props" />
+</Project>

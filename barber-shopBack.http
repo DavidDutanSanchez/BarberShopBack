@@ -1,0 +1,6 @@
+@barber_shopBack_HostAddress = http://localhost:5151
+
+GET {{barber_shopBack_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
