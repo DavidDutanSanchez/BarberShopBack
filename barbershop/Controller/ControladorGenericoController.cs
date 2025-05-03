@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace barbershop.Controller
 {
-    [ApiController]
+    /*[ApiController]
     [Route("api/[controller]")]
     public abstract class GenericController<TEntity, TKey> : ControllerBase
         where TEntity : class
@@ -52,5 +52,5 @@ namespace barbershop.Controller
             return NoContent();
         }
     }
-
+*/
 }

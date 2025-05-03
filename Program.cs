@@ -1,21 +1,26 @@
 using barbershop.Context;
+using barbershop.Interface;
+using barbershop.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-//using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-//using Swashbuckle.AspNetCore.Builder;    // for AddSwaggerGen, UseSwaggerUI
+// for the UseMySQL() extension:
+using MySql.EntityFrameworkCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1) Configure EF Core to use Oracle's MySQL provider
 builder.Services.AddDbContext<PeluqueriaContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("PeluqueriaDb"),
-        new MySqlServerVersion(new Version(8, 0, 33))
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("PeluqueriaDb")
     )
-);
+    // you could pass Provider‐specific options here via the second parameter if needed
+);  // ── UseMySQL lives in MySQL.EntityFrameworkCore.Extensions :contentReference[oaicite:0]{index=0}
 
-// --- add controllers/endpoints if you haven’t already ---
+// 2) Register your Personas service
+builder.Services.AddScoped<IControladorPersona, PeluqueriaService>();
+
+// 3) Add controllers + Swagger
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -35,13 +40,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Peluqueria API V1");
-        c.RoutePrefix = "";     // if you want Swagger at the app root
+        c.RoutePrefix = "";
     });
 }
 
-// --- your routing/middleware ---
+// 4) Middleware & routing
 app.UseRouting();
 app.UseAuthorization();
-app.MapControllers();            // for [ApiController] controllers
+app.MapControllers();
 
 app.Run();

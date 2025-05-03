@@ -10,8 +10,8 @@ namespace barbershop.Context
         {
         }
 
-        public DbSet<Files> Files { get; set; }
         public DbSet<Personas> Personas { get; set; }
+        public DbSet<Files> Files { get; set; }
         public DbSet<Productos> Productos { get; set; }
         public DbSet<Servicios> Servicios { get; set; }
         public DbSet<TicketsCabecera> TicketsCabecera { get; set; }

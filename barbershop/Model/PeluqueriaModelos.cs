@@ -1,15 +1,5 @@
 namespace barbershop.model
 {
-    public partial class Files
-    {
-        public Guid IdFiles { get; set; } = Guid.NewGuid();
-        public string ExtensionFiles { get; set; } = null!;
-        public string TamanioFiles { get; set; } = null!;
-        public string PathFiles { get; set; } = null!;
-        public string NombreArchivoFiles { get; set; } = null!;
-        public Guid _persona_id { get; set; } = Guid.NewGuid();
-        public virtual Personas? persona { get; set; } = null!;
-    }
     public partial class Personas
     {
         public Guid IdPersona { get; set; } = Guid.NewGuid();
@@ -17,10 +7,21 @@ namespace barbershop.model
         public string NombresPersona { get; set; } = null!;
         public string ApellidosPersona { get; set; } = null!;
         public string DireccionPersona { get; set; } = null!;
-        public DateOnly FechaNacimientoPersona { get; set; } = DateOnly.MinValue;
+        public DateTime FechaNacimientoPersona { get; set; } = DateTime.Now;
         public string CelularPersona { get; set; } = null!;
         public string CorreoPersona { get; set; } = null!;
-
+        public virtual List<Files>? _archivos { get; set; } = null!;
+        public virtual List<Usuarios>? _usuarios { get; set; } = null!;
+    }
+    public partial class Files
+    {
+        public Guid IdFiles { get; set; } = Guid.NewGuid();
+        public string ExtensionFiles { get; set; } = null!;
+        public decimal TamanioFiles { get; set; } = 0;
+        public string PathFiles { get; set; } = null!;
+        public string NombreArchivoFiles { get; set; } = null!;
+        public Guid _persona_id { get; set; } = Guid.NewGuid();
+        public virtual Personas? persona { get; set; } = null!;
     }
     public partial class Productos
     {
@@ -70,6 +71,6 @@ namespace barbershop.model
         public string permisosUsuarios { get; set; } = null!;
         public Guid _persona_id { get; set; } = Guid.NewGuid();
         public virtual Personas? persona { get; set; } = null!;
+        public virtual List<TicketsCabecera>? list_ticket_cabs { get; set; } = null!;
     }
-
 }
