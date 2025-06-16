@@ -5,20 +5,20 @@ using barbershop.model;
 
 namespace barbershop.Service
 {
-    public class PeluqueriaServicePersona : IControladorPersona
+    public class PeluqueriaServiceProducto : IControladorProducto
     {
         private readonly PeluqueriaContext _context;
-        public PeluqueriaServicePersona(PeluqueriaContext context)
+        public PeluqueriaServiceProducto(PeluqueriaContext context)
         {
             _context = context;
 
         }
-        public async Task<string> AddPersonas(Personas Personas)
+        public async Task<string> AddProductos(Productos Productos)
         {
             var response = "Realizado";
             try
             {
-                _ = _context.Personas.Add(Personas);
+                _ = _context.Productos.Add(Productos);
                 _ = await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -28,38 +28,36 @@ namespace barbershop.Service
             }
             return response;
         }
-        public async Task<PaginationDto<Personas>> AllPersonas(QueryParams qParams)
+        public async Task<PaginationDto<Productos>> AllProductos(QueryParams qParams)
         {
             try
             {
-                var personas = await _context.Personas
-                .Select(x => new Personas
+                var productos = await _context.Productos
+                .Select(x => new Productos
                 {
-                    IdPersona = x.IdPersona,
-                    CedulaPersona = x.CedulaPersona,
-                    NombresPersona = x.NombresPersona,
-                    ApellidosPersona = x.ApellidosPersona,
-                    DireccionPersona = x.DireccionPersona,
-                    FechaNacimientoPersona = x.FechaNacimientoPersona,
-                    CelularPersona = x.CelularPersona,
-                    CorreoPersona = x.CorreoPersona,
+                    Idproductos = x.Idproductos,
+                    NombreProducto = x.NombreProducto,
+                    CostoProducto = x.CostoProducto,
+                    StockProducto = x.StockProducto,
+                    IvaProducto = x.IvaProducto,
+                    CodigoProducto = x.CodigoProducto,
 
                 })
-                .OrderBy(c => c.NombresPersona)
+                .OrderBy(c => c.NombreProducto)
                 .GetPagedAsync(qParams);
-                return personas;
+                return productos;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException?.Message + " mensaje: " + ex.Message);
             }
         }
-        public async Task<string> DeletePersonas(Guid iD)
+        public async Task<string> DeleteProductos(Guid iD)
         {
             var response = "Realizado";
             try
             {
-                _ = _context.Personas.Remove(_context.Personas.Where(x => x.IdPersona == iD).First());
+                _ = _context.Productos.Remove(_context.Productos.Where(x => x.Idproductos == iD).First());
                 _ = await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -69,12 +67,12 @@ namespace barbershop.Service
             }
             return response;
         }
-        public async Task<string> UpdatePersonas(Personas Personas)
+        public async Task<string> UpdateProductos(Productos Productos)
         {
             var response = "Realizado";
             try
             {
-                _ = _context.Personas.Update(Personas);
+                _ = _context.Productos.Update(Productos);
                 _ = await _context.SaveChangesAsync();
             }
             catch (Exception ex)

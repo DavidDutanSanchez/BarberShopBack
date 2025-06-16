@@ -4,7 +4,6 @@ using barbershop.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 // for the UseMySQL() extension:
-using MySql.EntityFrameworkCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +16,12 @@ builder.Services.AddDbContext<PeluqueriaContext>(options =>
 );  // ── UseMySQL lives in MySQL.EntityFrameworkCore.Extensions :contentReference[oaicite:0]{index=0}
 
 // 2) Register your Personas service
-builder.Services.AddScoped<IControladorPersona, PeluqueriaService>();
+builder.Services.AddScoped<IControladorPersona, PeluqueriaServicePersona>();
+builder.Services.AddScoped<IControladorFile, PeluqueriaServiceFile>();
+builder.Services.AddScoped<IControladorProducto, PeluqueriaServiceProducto>();
+builder.Services.AddScoped<IControladorServicio, PeluqueriaServiceServicio>();
+builder.Services.AddScoped<IControladorTicket, PeluqueriaServiceTicket>();
+builder.Services.AddScoped<IControladorUsuario, PeluqueriaServiceUsuario>();
 
 // 3) Add controllers + Swagger
 builder.Services.AddControllers();
