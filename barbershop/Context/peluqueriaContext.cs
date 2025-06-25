@@ -3,13 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace barbershop.Context
 {
-    public class PeluqueriaContext : DbContext
+    public class PeluqueriaContext(DbContextOptions<PeluqueriaContext> options) : DbContext(options)
     {
-        public PeluqueriaContext(DbContextOptions<PeluqueriaContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Personas> Personas { get; set; }
         public DbSet<Files> Files { get; set; }
         public DbSet<Productos> Productos { get; set; }

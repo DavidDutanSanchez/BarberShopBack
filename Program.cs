@@ -3,19 +3,23 @@ using barbershop.Interface;
 using barbershop.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-// for the UseMySQL() extension:
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1) Configure EF Core to use Oracle's MySQL provider
+// 1) Configure EF Core to use MySQL provider
+var connectionString = builder.Configuration.GetConnectionString("PeluqueriaDb");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'PeluqueriaDb' not found.");
+}
 builder.Services.AddDbContext<PeluqueriaContext>(options =>
-    options.UseMySQL(
-        builder.Configuration.GetConnectionString("PeluqueriaDb")
-    )
-    // you could pass Provider‐specific options here via the second parameter if needed
-);  // ── UseMySQL lives in MySQL.EntityFrameworkCore.Extensions :contentReference[oaicite:0]{index=0}
+    options.UseMySQL(connectionString)
+);
 
-// 2) Register your Personas service
+// 2) Register your services
 builder.Services.AddScoped<IControladorPersona, PeluqueriaServicePersona>();
 builder.Services.AddScoped<IControladorFile, PeluqueriaServiceFile>();
 builder.Services.AddScoped<IControladorProducto, PeluqueriaServiceProducto>();
@@ -34,23 +38,91 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API for the peluqueria_pintado schema"
     });
+
+    // Adding JWT Bearer Token support for Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Enter JWT Bearer token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] { } }
+    });
 });
 
+// 4) CORS configuration (Allow requests from specific origins only)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://yourfrontenddomain.com", "http://localhost:5151")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+// 5) JWT Authentication configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = true;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:JwtSecret"])),
+        };
+    });
+
+// 6) HTTPS Redirection
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
+// Enforce HTTPS
+builder.Services.AddHttpsRedirection(options =>
+{
+    // options.HttpsPort = 5151; 
+});
+
+// Build the app
 var app = builder.Build();
 
+// Enable Swagger in Development and add Authentication Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Peluqueria API V1");
-        c.RoutePrefix = "";
+        c.RoutePrefix = ""; // Makes Swagger UI available at the root
     });
 }
 
-// 4) Middleware & routing
+// 7) Middleware & Routing
 app.UseRouting();
+
+// Enable CORS policy
+app.UseCors("AllowSpecificOrigin");
+
+// Use Authentication and Authorization Middleware
+app.UseAuthentication();
 app.UseAuthorization();
+
+// Enforce HTTPS
+// app.UseHttpsRedirection();
+// Use Forwarded Headers Middleware (Important for proxy setup)
+app.UseForwardedHeaders();
+
+// Map controllers
 app.MapControllers();
 
 app.Run();
