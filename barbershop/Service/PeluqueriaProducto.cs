@@ -37,7 +37,8 @@ namespace barbershop.Service
                 {
                     Idproductos = x.Idproductos,
                     NombreProducto = x.NombreProducto,
-                    CostoProducto = x.CostoProducto,
+                    // = x.CostoProducto,
+                       CostroProducto   = x.CostroProducto  ,
                     StockProducto = x.StockProducto,
                     IvaProducto = x.IvaProducto,
                     CodigoProducto = x.CodigoProducto,

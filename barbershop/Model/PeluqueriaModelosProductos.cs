@@ -4,7 +4,8 @@ namespace barbershop.model
     {
         public Guid Idproductos { get; set; } = Guid.NewGuid();
         public string NombreProducto { get; set; } = null!;
-        public decimal CostoProducto { get; set; } = 0;
+       // public decimal CostoProducto { get; set; } = 0;
+        public decimal CostroProducto   { get; set; } = 0;
         public int StockProducto { get; set; } = 0;
         public decimal IvaProducto { get; set; } = 0;
         public string CodigoProducto { get; set; } = null!;

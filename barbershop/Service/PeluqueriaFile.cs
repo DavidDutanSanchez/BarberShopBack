@@ -37,7 +37,8 @@ namespace barbershop.Service
                 .Select(x => new Files
                 {
                     IdFiles = x.IdFiles,
-                    ExtensionFiles = x.ExtensionFiles,
+                    //ExtensionFiles = x.ExtensionFiles,
+                        ExtencionFiles = x.ExtencionFiles,
                     TamanioFiles = x.TamanioFiles,
                     PathFiles = x.PathFiles,
                     NombreArchivoFiles = x.NombreArchivoFiles,

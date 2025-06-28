@@ -49,7 +49,7 @@ namespace barbershop.Setting
             _ = builder.Property(e => e.IdFiles)
                 .HasMaxLength(36)
                 .HasColumnName("idFiles");
-            _ = builder.Property(e => e.ExtensionFiles)
+            _ = builder.Property(e => e.ExtencionFiles)
                 .HasMaxLength(100)
                 .HasColumnName("extensionFiles");
             _ = builder.Property(e => e.TamanioFiles)
@@ -84,7 +84,7 @@ namespace barbershop.Setting
             _ = builder.Property(e => e.NombreProducto)
                 .HasMaxLength(255)
                 .HasColumnName("nombreProducto");
-            _ = builder.Property(e => e.CostoProducto)
+            _ = builder.Property(e => e.CostroProducto)
                 .HasColumnType("decimal(18, 6)")
                 .HasColumnName("costoProducto");
             _ = builder.Property(e => e.StockProducto)
@@ -208,7 +208,7 @@ namespace barbershop.Setting
                 .HasColumnName("contraseniaUsuarios");
             _ = builder.Property(e => e.permisosUsuarios)
                 .HasMaxLength(100)
-                .HasColumnName("permisosUsuarios");
+                .HasColumnName("persmisosUsuarios");
             _ = builder.Property(e => e._persona_id)
                 .HasMaxLength(36)
                 .HasColumnName("Personas_idPersona");

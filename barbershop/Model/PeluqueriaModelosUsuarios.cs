@@ -4,7 +4,8 @@ namespace barbershop.model
     {
         public Guid IdUsuarios { get; set; } = Guid.NewGuid();
         public string Usuario { get; set; } = null!;
-        public string ContraseniaUsuarios { get; set; } = null!;
+        //public string ContraseniaUsuarios { get; set; } = null!;
+          public byte[] ContraseniaUsuarios { get; set; } = null!;
         public string permisosUsuarios { get; set; } = null!;
         public Guid _persona_id { get; set; } = Guid.NewGuid();
         public virtual Personas? persona { get; set; } = null!;
