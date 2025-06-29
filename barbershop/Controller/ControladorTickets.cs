@@ -36,7 +36,7 @@ namespace barbershop.Controller
         }
 
         [HttpDelete("DeleteTicketCabecera/{id}")]
-        public async Task<ActionResult> DeleteTicketCabecera([FromQuery] Guid id)
+        public async Task<ActionResult> DeleteTicketCabecera([FromRoute] Guid id)
         {
             string response = await _personaService.DeleteTicketsCabecera(id);
             return (ActionResult)(response == "Realizado" ? Ok(response) : (IActionResult)InternalServerError(response));
@@ -63,7 +63,7 @@ namespace barbershop.Controller
         }
 
         [HttpDelete("DeleteTicketDetalle/{id}")]
-        public async Task<ActionResult> DeleteTicketDetalle([FromQuery] Guid id)
+        public async Task<ActionResult> DeleteTicketDetalle([FromRoute] Guid id)
         {
             string response = await _personaService.DeleteTicketsDetalle(id);
             return (ActionResult)(response == "Realizado" ? Ok(response) : (IActionResult)InternalServerError(response));

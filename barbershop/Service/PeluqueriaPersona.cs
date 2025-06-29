@@ -64,8 +64,7 @@ namespace barbershop.Service
             }
             catch (Exception ex)
             {
-                response = ex.InnerException?.Message;
-                throw new Exception(response);
+                throw new Exception(ex.InnerException?.Message + " mensaje: " + ex.Message);
             }
             return response;
         }

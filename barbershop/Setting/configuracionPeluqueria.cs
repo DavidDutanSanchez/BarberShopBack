@@ -90,7 +90,7 @@ namespace barbershop.Setting
             _ = builder.Property(e => e.StockProducto)
                 .HasColumnName("stockProducto");
             _ = builder.Property(e => e.IvaProducto)
-                .HasColumnType("decimal(7, 4)")
+                .HasColumnType("decimal(5, 4)")
                 .HasColumnName("ivaProducto");
             _ = builder.Property(e => e.CodigoProducto)
                 .HasMaxLength(255)
@@ -144,7 +144,7 @@ namespace barbershop.Setting
             _ = builder.HasOne(x => x.usuario)
                 .WithMany(x => x.list_ticket_cabs)
                 .HasForeignKey(x => x._usuario_id)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
     public class TicketsDetalleConfiguration : IEntityTypeConfiguration<TicketsDetalle>
@@ -208,14 +208,14 @@ namespace barbershop.Setting
                 .HasColumnName("contraseniaUsuarios");
             _ = builder.Property(e => e.permisosUsuarios)
                 .HasMaxLength(100)
-                .HasColumnName("persmisosUsuarios");
+                .HasColumnName("permisosUsuarios");
             _ = builder.Property(e => e._persona_id)
                 .HasMaxLength(36)
                 .HasColumnName("Personas_idPersona");
             _ = builder.HasOne(x => x.persona)
                 .WithMany(x => x._usuarios)
                 .HasForeignKey(x => x._persona_id)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
