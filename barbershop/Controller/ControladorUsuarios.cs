@@ -9,11 +9,16 @@ namespace barbershop.Controller
     public class UsuarioController : SistecControllerBase
     {
         private readonly IControladorUsuario _personaService;
+        private readonly IControladorUsuario _usuarioService;
 
-        public UsuarioController(IControladorUsuario personaService)
+        public UsuarioController(IControladorUsuario personaService, IControladorUsuario usuarioService)
         {
             _personaService = personaService;
+            _usuarioService = usuarioService;
         }
+
+       
+
         //CRUD Usuarios
         [HttpGet("FindAllUsuarios")]
         public async Task<ActionResult<PaginationDto<Usuarios>>> GetAllUsuarios([FromQuery] QueryParams qParams)
@@ -40,5 +45,33 @@ namespace barbershop.Controller
             string response = await _personaService.DeleteUsuarios(id);
             return (ActionResult)(response == "Realizado" ? Ok(response) : (IActionResult)InternalServerError(response));
         }
+
+      [HttpPost("Login")]
+ public async Task<IActionResult> LoginUsuario([FromBody] UsuarioLoginDto loginData)
+    {
+        var result = await _usuarioService.LoginUsuarioAsync(loginData.Usuario, loginData.Contrasenia);
+
+        if (result == null)
+        {
+            return Unauthorized(new
+            {
+                success = false,
+                message = "Usuario o contraseña incorrectos",
+                result = (object?)null
+            });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            message = "Login exitoso",
+            usuario = result.Usuario,
+            permisos = result.permisosUsuarios,
+            id = result.IdUsuarios
+        });
+}
+
+
+
     }
 }

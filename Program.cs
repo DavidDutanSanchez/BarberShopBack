@@ -65,6 +65,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// builder.Services.AddControllers().AddJsonOptions(options =>
+// {
+//     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+//     options.JsonSerializerOptions.WriteIndented = true;
+// });
+
+
 // 5) JWT Authentication configuration
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
