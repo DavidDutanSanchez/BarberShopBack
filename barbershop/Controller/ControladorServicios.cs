@@ -35,7 +35,7 @@ namespace barbershop.Controller
         }
 
         [HttpDelete("DeleteServicios/{id}")]
-        public async Task<ActionResult> DeleteServicios([FromQuery] Guid id)
+        public async Task<ActionResult> DeleteServicios([FromRoute] Guid id)
         {
             string response = await _personaService.DeleteServicios(id);
             return (ActionResult)(response == "Realizado" ? Ok(response) : (IActionResult)InternalServerError(response));

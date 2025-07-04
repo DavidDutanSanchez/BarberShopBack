@@ -175,18 +175,21 @@ namespace barbershop.Setting
             _ = builder.Property(e => e._producto_id)
                 .HasMaxLength(36)
                 .HasColumnName("Productos_idProductos");
+            _ = builder.Property(e => e.CantidadTicketDet)
+                .HasColumnName("cantidadTicketDet");
             _ = builder.HasOne(x => x.ticektCabecera)
                 .WithMany(x => x.detalle_tickets)
                 .HasForeignKey(x => x._ticket_cabecera)
                 .OnDelete(DeleteBehavior.Restrict);
-            _ = builder.HasOne(x => x.servicios)
+            _ = builder.HasOne(x => x.servicios_det)
                 .WithMany(x => x.detalle_tickets)
                 .HasForeignKey(x => x._servicio_id)
                 .OnDelete(DeleteBehavior.Restrict);
-            _ = builder.HasOne(x => x.productos)
+            _ = builder.HasOne(x => x.productos_det)
                 .WithMany(x => x.detalle_tickets)
                 .HasForeignKey(x => x._producto_id)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
         }
     }
     public class UsuariosConfiguration : IEntityTypeConfiguration<Usuarios>

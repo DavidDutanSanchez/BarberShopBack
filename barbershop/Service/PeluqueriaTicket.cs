@@ -93,7 +93,7 @@ namespace barbershop.Service
             }
         }
 
-        public async Task<string> DeleteTicketsCabecera(Guid iD)
+        public async Task<string> Delete(Guid iD)
         {
             var response = "Realizado";
             try
@@ -107,6 +107,10 @@ namespace barbershop.Service
                 throw new Exception(response);
             }
             return response;
+        }
+        public Task<string> DeleteTicketsCabecera(Guid iD)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<string> DeleteTicketsDetalle(Guid iD)
