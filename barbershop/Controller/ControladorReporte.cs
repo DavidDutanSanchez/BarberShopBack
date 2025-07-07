@@ -6,7 +6,7 @@ namespace barbershop.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ControladorReporte : ControllerBase
+    public class ControladorReporte : SistecControllerBase
     {
         private readonly IControladorReporte _servicio;
 
@@ -20,7 +20,7 @@ namespace barbershop.Controller
         {
             var resultado = await _servicio.ObtenerReporteTicketsAsync(qParams);
             return Ok(resultado);
-        }   
-       
+        }
+
     }
 }

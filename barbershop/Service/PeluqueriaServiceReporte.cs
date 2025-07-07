@@ -1,12 +1,6 @@
-using System.Data;
 using barbershop.Interface;
 using barbershop.model;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
-
-using barbershop.Interface;
 using barbershop.Model;
-using Microsoft.EntityFrameworkCore;
 using barbershop.Context;
 
 namespace barbershop.Service
