@@ -26,6 +26,8 @@ builder.Services.AddScoped<IControladorProducto, PeluqueriaServiceProducto>();
 builder.Services.AddScoped<IControladorServicio, PeluqueriaServiceServicio>();
 builder.Services.AddScoped<IControladorTicket, PeluqueriaServiceTicket>();
 builder.Services.AddScoped<IControladorUsuario, PeluqueriaServiceUsuario>();
+builder.Services.AddScoped<IControladorReporte, PeluqueriaServiceReporte>();
+
 
 // 3) Add controllers + Swagger
 builder.Services.AddControllers();

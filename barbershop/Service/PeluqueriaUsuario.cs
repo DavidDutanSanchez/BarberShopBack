@@ -70,7 +70,6 @@ namespace barbershop.Service
 
         string contraseniaGuardada = System.Text.Encoding.UTF8.GetString(user.ContraseniaUsuarios);
 
-        // Asegúrate de que ambas contraseñas están limpias
         if (contraseniaGuardada.Trim() == contrasenia.Trim())
         {
             return user;
