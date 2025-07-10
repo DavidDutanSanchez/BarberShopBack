@@ -60,7 +60,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("https://yourfrontenddomain.com", "http://localhost:5151")
+       // policy.WithOrigins("https://yourfrontenddomain.com", "http://localhost:5151")
+        policy.WithOrigins("http://181.113.129.250:22600")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -133,5 +134,8 @@ app.UseForwardedHeaders();
 
 // Map controllers
 app.MapControllers();
+
+//app.Urls.Add("http://0.0.0.0:5000");
+app.Urls.Add("http://0.0.0.0:22600");
 
 app.Run();
