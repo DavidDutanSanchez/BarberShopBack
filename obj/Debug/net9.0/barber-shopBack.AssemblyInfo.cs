@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("barber-shopBack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76bc89c31dfe9312e714c9fbe586f4e25faa42dc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+069cd9ec62ffbe3bf3db7ccc87b57fbbe21f680e")]
 [assembly: System.Reflection.AssemblyProductAttribute("barber-shopBack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("barber-shopBack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
