@@ -44,7 +44,7 @@ namespace barbershop.Service
                     permisosUsuarios = x.permisosUsuarios,
                     _persona_id = x._persona_id,
                     // persona = (x.persona.ApellidosPersona ?? "") + " " + (x.persona.NombresPersona?? "")
-                     PersonaNombreCompleto = x.persona != null
+                    PersonaNombreCompleto = x.persona != null
         ? (x.persona.ApellidosPersona + " " + x.persona.NombresPersona)
         : string.Empty
 
@@ -60,28 +60,45 @@ namespace barbershop.Service
                 throw new Exception(ex.InnerException?.Message + " mensaje: " + ex.Message);
             }
         }
-        
- public async Task<Usuarios?> LoginUsuarioAsync(string usuario, string contrasenia)
-{
-    try
-    {
-        var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Usuario == usuario);
-        if (user == null) return null;
 
-        string contraseniaGuardada = System.Text.Encoding.UTF8.GetString(user.ContraseniaUsuarios);
-
-        if (contraseniaGuardada.Trim() == contrasenia.Trim())
+        public async Task<Usuarios?> LoginUsuarioAsync(UsuarioLoginDto usuarioLoginDto)
         {
-            return user;
-        }
+            try
+            {
+                var user = await _context.Usuarios
+                    .Where(u => u.Usuario == usuarioLoginDto.Usuario)
+                    .Select(u => new
+                    {
+                        u.IdUsuarios,
+                        u.Usuario,
+                        u.ContraseniaUsuarios,
+                        u.permisosUsuarios,
+                        u._persona_id
+                    })
+                    .SingleOrDefaultAsync();
+                if (user == null)
+                {
+                    return null;
+                }
 
-        return null;
-    }
-    catch (Exception ex)
-    {
-        throw new Exception("Error al autenticar usuario: " + ex.Message);
-    }
-}
+                var stored = System.Text.Encoding.UTF8.GetString(user.ContraseniaUsuarios).Trim();
+                if (!string.Equals(stored, usuarioLoginDto.Contrasenia.Trim(), StringComparison.Ordinal))
+                    return null;
+
+                return new Usuarios
+                {
+                    IdUsuarios = user.IdUsuarios,
+                    Usuario = user.Usuario,
+                    ContraseniaUsuarios = Array.Empty<byte>(),
+                    permisosUsuarios = user.permisosUsuarios,
+                    _persona_id = user._persona_id
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException?.Message + " mensaje: " + ex.Message);
+            }
+        }
 
 
         public async Task<string> DeleteUsuarios(Guid iD)

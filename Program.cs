@@ -60,15 +60,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-         policy.WithOrigins("https://yourfrontenddomain.com", "http://localhost:5151")
-        // policy.WithOrigins("http://181.113.129.250:22600")
-        //       .AllowAnyHeader()
-        //       .AllowAnyMethod()
-        //       .AllowCredentials();
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5151")
+         // policy.WithOrigins("http://181.113.129.250:22600")
+         //       .AllowAnyHeader()
+         //       .AllowAnyMethod()
+         //       .AllowCredentials();
 
-       // policy.AllowAnyOrigin()
-          .AllowAnyHeader()
-          .AllowAnyMethod();
+         // policy.AllowAnyOrigin()
+         .AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowCredentials();
 
     });
 });

@@ -9,7 +9,7 @@ namespace barbershop.Interface
         Task<string> UpdateUsuarios(Usuarios Usuarios);
         Task<string> AddUsuarios(Usuarios Usuarios);
         Task<string> DeleteUsuarios(Guid iD);
-        Task<Usuarios?> LoginUsuarioAsync(string usuario, string contrasenia);
+        Task<Usuarios?> LoginUsuarioAsync(UsuarioLoginDto usuarioLoginDto);
 
     }
 }

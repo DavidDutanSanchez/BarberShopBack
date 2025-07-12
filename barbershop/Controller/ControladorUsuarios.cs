@@ -1,5 +1,6 @@
 using barbershop.Interface;
 using barbershop.model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace barbershop.Controller
@@ -17,7 +18,7 @@ namespace barbershop.Controller
             _usuarioService = usuarioService;
         }
 
-       
+
 
         //CRUD Usuarios
         [HttpGet("FindAllUsuarios")]
@@ -46,32 +47,18 @@ namespace barbershop.Controller
             return (ActionResult)(response == "Realizado" ? Ok(response) : (IActionResult)InternalServerError(response));
         }
 
-      [HttpPost("Login")]
- public async Task<IActionResult> LoginUsuario([FromBody] UsuarioLoginDto loginData)
-    {
-        var result = await _usuarioService.LoginUsuarioAsync(loginData.Usuario, loginData.Contrasenia);
-
-        if (result == null)
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginUsuario([FromBody] UsuarioLoginDto loginData)
         {
-            return Unauthorized(new
+            var usuario = await _usuarioService.LoginUsuarioAsync(loginData);
+            if (usuario is null)
             {
-                success = false,
-                message = "Usuario o contraseña incorrectos",
-                result = (object?)null
-            });
+                string mensaje = "Usuario o contraseña incorrectos.";
+                return (ActionResult)(IActionResult)InternalServerError(mensaje);
+            }
+            return Ok(usuario);
         }
-
-        return Ok(new
-        {
-            success = true,
-            message = "Login exitoso",
-            usuario = result.Usuario,
-            permisos = result.permisosUsuarios,
-            id = result.IdUsuarios
-        });
-}
-
-
 
     }
 }
