@@ -19,6 +19,8 @@ namespace barbershop.model
 
         public bool isOrderByDescending { get; set; } = true;
         public string? orderBy { get; set; }
+        public string? fechaInicio { get; set; }
+        public string? fechaFin { get; set; }
 
     }
 }

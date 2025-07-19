@@ -13,6 +13,9 @@ namespace barbershop.Model
     public decimal TotalServicios { get; set; }
 
     public int TotalVecesServicio { get; set; }
+    public decimal CostoServicio { get; set; }
+      public decimal costoUnitarioServicio { get; set; }
+
 }
 
 }

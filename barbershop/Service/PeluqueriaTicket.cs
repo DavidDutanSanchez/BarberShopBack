@@ -2,22 +2,36 @@ using barbershop.Context;
 using barbershop.Extensions;
 using barbershop.Interface;
 using barbershop.model;
+using System.Text.Json;
+
 
 namespace barbershop.Service
 {
     public class PeluqueriaServiceTicket : IControladorTicket
     {
         private readonly PeluqueriaContext _context;
-        public PeluqueriaServiceTicket(PeluqueriaContext context)
+        private readonly ILogger<PeluqueriaServiceTicket> _logger;
+
+        public PeluqueriaServiceTicket(PeluqueriaContext context,ILogger<PeluqueriaServiceTicket> logger)
         {
             _context = context;
-
+            _logger = logger;
         }
         public async Task<string> AddTicketsCabecera(TicketsCabecera TicketsCabecera)
         {
             var response = "Realizado";
             try
             {
+
+                TicketsCabecera.FechaTicket = DateTime.Now;
+
+                if (TicketsCabecera.detalle_tickets != null)
+                {
+                    foreach (var det in TicketsCabecera.detalle_tickets)
+                {
+                    det.FechaTicketDet = DateTime.Now;
+                }
+                }
                 _ = _context.TicketsCabecera.Add(TicketsCabecera);
                 _ = await _context.SaveChangesAsync();
             }
@@ -34,6 +48,7 @@ namespace barbershop.Service
             var response = "Realizado";
             try
             {
+
                 _ = _context.TicketsDetalle.Add(TicketsDetalle);
                 _ = await _context.SaveChangesAsync();
             }

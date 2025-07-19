@@ -21,7 +21,7 @@ namespace barbershop.Controller
 
 
         //CRUD Usuarios
-        [HttpGet("FindAllUsuarios")]
+        [HttpGet("FindAllUsuarios")]      
         public async Task<ActionResult<PaginationDto<Usuarios>>> GetAllUsuarios([FromQuery] QueryParams qParams)
         {
             PaginationDto<Usuarios> pagedResult = await _personaService.AllUsuarios(qParams);
