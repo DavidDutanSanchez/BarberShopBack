@@ -1,8 +1,9 @@
 using barbershop.Context;
 using barbershop.Interface;
-using barbershop.Model;
 using barbershop.model;
 using Microsoft.EntityFrameworkCore;
+using barbershop.Dtos;
+using barbershop.model.Parameters;
 
 namespace barbershop.Service
 {

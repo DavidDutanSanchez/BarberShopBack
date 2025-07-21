@@ -1,7 +1,9 @@
 using barbershop.Context;
+using barbershop.Dtos;
 using barbershop.Extensions;
 using barbershop.Interface;
 using barbershop.model;
+using barbershop.model.Parameters;
 
 namespace barbershop.Service
 {
@@ -38,7 +40,7 @@ namespace barbershop.Service
                     Idproductos = x.Idproductos,
                     NombreProducto = x.NombreProducto,
                     // = x.CostoProducto,
-                       CostroProducto   = x.CostroProducto  ,
+                    CostroProducto = x.CostroProducto,
                     StockProducto = x.StockProducto,
                     IvaProducto = x.IvaProducto,
                     CodigoProducto = x.CodigoProducto,

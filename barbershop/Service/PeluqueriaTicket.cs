@@ -1,8 +1,10 @@
 using barbershop.Context;
+using barbershop.Dtos;
 using barbershop.Extensions;
 using barbershop.Interface;
 using barbershop.model;
-using System.Text.Json;
+using barbershop.model.Parameters;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace barbershop.Service
@@ -12,7 +14,7 @@ namespace barbershop.Service
         private readonly PeluqueriaContext _context;
         private readonly ILogger<PeluqueriaServiceTicket> _logger;
 
-        public PeluqueriaServiceTicket(PeluqueriaContext context,ILogger<PeluqueriaServiceTicket> logger)
+        public PeluqueriaServiceTicket(PeluqueriaContext context, ILogger<PeluqueriaServiceTicket> logger)
         {
             _context = context;
             _logger = logger;
@@ -28,9 +30,9 @@ namespace barbershop.Service
                 if (TicketsCabecera.detalle_tickets != null)
                 {
                     foreach (var det in TicketsCabecera.detalle_tickets)
-                {
-                    det.FechaTicketDet = DateTime.Now;
-                }
+                    {
+                        det.FechaTicketDet = DateTime.Now;
+                    }
                 }
                 _ = _context.TicketsCabecera.Add(TicketsCabecera);
                 _ = await _context.SaveChangesAsync();
@@ -59,21 +61,23 @@ namespace barbershop.Service
             }
             return response;
         }
-        public async Task<PaginationDto<TicketsCabecera>> AllTicketsCabecera(QueryParams qParams)
+        public async Task<PaginationDto<TicketsCabeceraDto>> AllTicketsCabecera(QueryParams qParams)
         {
             try
             {
                 var servicios = await _context.TicketsCabecera
-                .Select(x => new TicketsCabecera
+                .Select(x => new TicketsCabeceraDto
                 {
-                    IdTickets = x.IdTickets,
-                    FechaTicket = x.FechaTicket,
-                    EstadoTicketCab = x.EstadoTicketCab,
-                    TotalTicketCab = x.TotalTicketCab,
+                    idTickets = x.IdTickets,
+                    fechaTicket = x.FechaTicket,
+                    estadoTicketCab = x.EstadoTicketCab,
+                    totalTicketCab = x.TotalTicketCab,
                     _usuario_id = x._usuario_id,
-
+                    persona = x.usuario.persona                    
                 })
-                .OrderBy(c => c.FechaTicket)
+                .OrderBy(c => c.fechaTicket)
+                .ApplySearch(qParams.search, t => t.persona.NombresPersona, t => t.persona.ApellidosPersona)
+                .OrderBy(qParams.orderBy ?? nameof(TicketsCabeceraDto.fechaTicket), qParams.isOrderByDescending)
                 .GetPagedAsync(qParams);
                 return servicios;
             }
@@ -143,6 +147,57 @@ namespace barbershop.Service
             }
             return response;
         }
+        public async Task<TicketsCabeceraDto?> TicketsCabeceraById(Guid id)
+        {
+            var cabecera = await _context.TicketsCabecera
+                .Include(tc => tc.usuario).ThenInclude(u => u.persona)
+                .FirstOrDefaultAsync(x => x.IdTickets == id);
+
+            if (cabecera == null)
+                return null;
+
+            var detalle = await _context.TicketsDetalle
+                .Where(x => x._ticket_cabecera == id)
+                .Select(x => new TicketsDetalleDto
+                {
+                    idTicketsDetalle = x.IdTicketsDetalle,
+                    subTotalTicketDet = x.SubTotalTicketDet,
+                    fechaTicketDet = x.FechaTicketDet,
+                    _ticket_cabecera = x._ticket_cabecera,
+                    _servicio_id = x._servicio_id,
+                    cantidadTicketDet = x.CantidadTicketDet,
+                    servicios = x.servicios_det == null
+                        ? null
+                        : new ServiciosDto
+                        {
+                            idServicio = x.servicios_det.IdServicio,
+                            nombreServicio = x.servicios_det.NombreServicio,
+                            costoServicio = x.servicios_det.CostoServicio,
+                            comisionServicio = x.servicios_det.ComisionServicio
+                        }
+                })
+                .ToListAsync();
+
+            var dto = new TicketsCabeceraDto
+            {
+                idTickets = cabecera.IdTickets,
+                fechaTicket = cabecera.FechaTicket,
+                estadoTicketCab = cabecera.EstadoTicketCab,
+                totalTicketCab = cabecera.TotalTicketCab,
+                _usuario_id = cabecera._usuario_id,
+                persona_nueva = new PersonaDto
+                {
+                    IdPersona = cabecera.usuario.persona.IdPersona,
+                    CedulaPersona = cabecera.usuario.persona.CedulaPersona,
+                    NombresPersona = cabecera.usuario.persona.NombresPersona,
+                    ApellidosPersona = cabecera.usuario.persona.ApellidosPersona,
+                },
+                detalle_tickets = detalle
+            };
+
+            return dto;
+        }
+
         public async Task<string> UpdateTicketsCabecera(TicketsCabecera TicketsCabecera)
         {
             var response = "Realizado";

@@ -1,4 +1,6 @@
+using barbershop.Dtos;
 using barbershop.model;
+using barbershop.model.Parameters;
 
 namespace barbershop.Interface
 {

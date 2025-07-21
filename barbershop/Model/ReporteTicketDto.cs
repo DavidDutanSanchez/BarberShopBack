@@ -1,4 +1,4 @@
-namespace barbershop.Model
+namespace barbershop.model
 {
    public class ReporteTicket
 {

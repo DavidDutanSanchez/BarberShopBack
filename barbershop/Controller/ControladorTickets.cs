@@ -1,5 +1,7 @@
+using barbershop.Dtos;
 using barbershop.Interface;
 using barbershop.model;
+using barbershop.model.Parameters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace barbershop.Controller
@@ -17,10 +19,16 @@ namespace barbershop.Controller
 
         //CRUD TicketsCabecera
         [HttpGet("FindAllTicketsCabecera")]
-        public async Task<ActionResult<PaginationDto<TicketsCabecera>>> GetAllTicketCabecera([FromQuery] QueryParams qParams)
+        public async Task<ActionResult<PaginationDto<TicketsCabeceraDto>>> GetAllTicketCabecera([FromQuery] QueryParams qParams)
         {
-            PaginationDto<TicketsCabecera> pagedResult = await _personaService.AllTicketsCabecera(qParams);
+            PaginationDto<TicketsCabeceraDto> pagedResult = await _personaService.AllTicketsCabecera(qParams);
             return Ok(pagedResult);
+        }
+        [HttpGet("FindTicketsCabeceraById")]
+        public async Task<ActionResult<PaginationDto<TicketsCabeceraDto>>> FindTicketsCabeceraById([FromQuery] Guid Id)
+        {
+            TicketsCabeceraDto result = await _personaService.TicketsCabeceraById(Id);
+            return Ok(result);
         }
         [HttpPut("AddTicketsCabecera")]
         public async Task<IActionResult> AddTicketsCabecera([FromBody] TicketsCabecera ticketsCabecera)

@@ -1,7 +1,9 @@
 using barbershop.Context;
+using barbershop.Dtos;
 using barbershop.Extensions;
 using barbershop.Interface;
 using barbershop.model;
+using barbershop.model.Parameters;
 using Microsoft.EntityFrameworkCore;
 
 

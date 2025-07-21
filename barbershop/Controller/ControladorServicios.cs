@@ -1,5 +1,7 @@
+using barbershop.Dtos;
 using barbershop.Interface;
 using barbershop.model;
+using barbershop.model.Parameters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace barbershop.Controller
