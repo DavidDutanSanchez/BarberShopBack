@@ -27,12 +27,12 @@ namespace barbershop.Dtos
     public partial class ServiciosDto
     {
         public Guid idServicio { get; set; }
-        public string nombreServicio { get; set; }
+        public string nombreServicio { get; set; } = null!;
         public decimal costoServicio { get; set; }
         public decimal comisionServicio { get; set; }
     }
 
-    public partial class PersonaDto 
+    public partial class PersonaDto
     {
         public Guid IdPersona { get; set; } = Guid.NewGuid();
         public string CedulaPersona { get; set; } = null!;

@@ -7,7 +7,7 @@ namespace barbershop.Interface
     public interface IControladorTicket
     {
         //CRUD TicketsCabecera
-        Task<PaginationDto<TicketsCabeceraDto>> AllTicketsCabecera(QueryParams qParams);
+        Task<PaginationDto<TicketsCabeceraDto>> AllTicketsCabecera(QueryParams qParams, bool estado);
         Task<TicketsCabeceraDto> TicketsCabeceraById(Guid Id);
         Task<string> UpdateTicketsCabecera(TicketsCabecera TicketsCabecera);
         Task<string> AddTicketsCabecera(TicketsCabecera TicketsCabecera);

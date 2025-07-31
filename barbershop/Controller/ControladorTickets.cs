@@ -19,9 +19,9 @@ namespace barbershop.Controller
 
         //CRUD TicketsCabecera
         [HttpGet("FindAllTicketsCabecera")]
-        public async Task<ActionResult<PaginationDto<TicketsCabeceraDto>>> GetAllTicketCabecera([FromQuery] QueryParams qParams)
+        public async Task<ActionResult<PaginationDto<TicketsCabeceraDto>>> GetAllTicketCabecera([FromQuery] QueryParams qParams, [FromQuery] bool estado)
         {
-            PaginationDto<TicketsCabeceraDto> pagedResult = await _personaService.AllTicketsCabecera(qParams);
+            PaginationDto<TicketsCabeceraDto> pagedResult = await _personaService.AllTicketsCabecera(qParams, estado);
             return Ok(pagedResult);
         }
         [HttpGet("FindTicketsCabeceraById")]
